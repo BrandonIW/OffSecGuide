@@ -1,0 +1,3 @@
+* nmap
+
+nmap -sV -sC --script=ftp-anon.nse <target IP> -> Check to see if an FTP svr allows for Anon. logins (username=anonymous and blank pass)
