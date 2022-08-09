@@ -2,8 +2,16 @@
 https://github.com/OJ/gobuster
 Subdomain Enumeration. Directory Enumeration. AWS E3 enumeration. Utilizes Brute Force via a provided Wordlist file. Fuzzing support. 
 
-#-----NOTES
+
+#-----ADD. NOTES
+Shows HTTP status codes, content length and other information if provided in flags. 
 
 
 #-----EXAMPLE USAGES
 gobuster dir -u https://mysite.com/path/to/folder -t 50 -w wordlist.txt -x .php,.html  --> Search for subdirectories under the given URL, utilizing provided wordlist, searching specifically for files with extensions specified by -x 
+
+gobuster dir -u https://mysite.com/path/to/folder -t 50 -w wordlist.txt --delay 1s --useragent <User agent>  --> Delay between queries if needed to avoid overwhelming the host and a custom user agent
+
+gobuster dns -d google.com -w ~/wordlists/subdomains.txt -i  --> Will search for subdomains such as support.google.com, mail.google.com etc. etc. w/ associated IPs
+
+gobuster fuzz -u http://10.10.0.10/admin/php?username=admin&password=FUZZ -w password.txt  --> Fuzzes a parameter in the given URL. For example a password parameter 
