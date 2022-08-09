@@ -1,0 +1,2 @@
+* nmap
+nmap -p <port> --script=nfs-ls,nfs-statfs,nfs-showmount <TARGET IP> -> Enumeration of NFS shares
