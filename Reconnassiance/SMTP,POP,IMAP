@@ -1,0 +1,6 @@
+Overview
+3 Functions for SMTP:
+1) Verifies who is sending mail
+2) Sends outgoing mail
+3) If mail cannot be delivered, send error back to sender
+

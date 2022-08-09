@@ -3,8 +3,50 @@ Password Cracker. Can perform wordlist, B.F., Word Mangling.
 
 
 #-----ADD. NOTES
-john --wordlist=<wordlist.txt> <hash file, newline separated> -> John automagically detects the hash type and attempts to crack via dictionary
-john --format=<format> --wordlist=<wordlist.txt> 1445ASDFF3FGDSG3145 -> Specify the exact format of the hash if known. Crack a single hash 
+Identify the Hash first w/ smth like Haiti
+Formats: https://pentestmonkey.net/cheat-sheet/john-the-ripper-hash-formats
+
+#-----/etc/shadow
+If needing to crack /etc/shadow, John needs an accompanying /etc/passwd file to successfully understand and crack the hashes in /etc/shadow. If we have /etc/passwd:
+1) unshadow <path to passwd file> <path to shadow file> > unshadowed.txt
+2) john --wordlist=<wordlist.txt> unshadowed.txt
+
+Linux uses format of sha512crypt for their hashing. We can also decrypt /etc/hashes via:
+1) Extract the single line associated w/ the target user in /etc/passwd e.g. root:0:0:/root/bin/bash or w/e
+2) Extract the single line associated w/ the target user in /etc/shadow e.g. :6$:<SALT>:<HASH> etc.
+3) Put both of them in a single file, separate by newline
+4) john --format=sha512crypt --wordlist=<wordlist file> file.txt 
+
+
+#-----Single Crack Mode/Word Mangling
+We can feed John some input and have it build its own DB of possible passwords through Name Mangling rules i.e. Password > P@ssword > P@$$w0rd > password > PASSWORD > P@ssw0rd > Password1 etc.
+When we provide the hash file for single crack mode, it MUST be formatted as: <word to be mangled>:<Hash> i.e. Password:9713654ASHD23
+
+Custom Complexity/Mangling rules can be created (https://www.openwall.com/john/doc/RULES.shtml) to predict basic human tendancies i.e. the first letter is probably Uppercased, if there's a number, it's probably at the end etc. i.e. hunter -> Complexity Rules -> Probably smth like: Hunter1! 
+
+Custom Mangling is done in john.conf file (locate --regex john.*conf). To create a new rule:
+1) Open john.conf
+2) Create a new line in the format of: [List.Rules:CustomRule1]
+3) Followed by the rules (Look online and the link above for examples)
+
+
+#-----ZIP & RAR & PDF Password Protected Files
+1) zip2john <zipfile> > file.txt  -OR- rar2john <rarfile> > file.txt  -OR- pdf2john <pdf-file> > file.txt -> The zip2john or rar2john will first find the hash of the password assocaited with the pass-protected file
+2) john --wordlist=<wordlist.txt> file.txt
+
+
+#-----SSH Keys
+1) python3 /usr/share/john/ssh2john.py <id_rsa key file> > output.txt
+2) john --wordlist=<wordlist.txt> output.txt 
 
 
 #-----EXAMPLE USAGES
+john --wordlist=<wordlist.txt> <hash file, newline separated> -> John automagically detects the hash type and attempts to crack via dictionary
+john --format=<format> --wordlist=<wordlist.txt> 1445ASDFF3FGDSG3145 -> Specify the exact format of the hash if known. Crack a single hash
+
+john --format=raw-MD5 /home/testuser/hash.txt -> Crack MD5 hash using built-in John Wordlist (it's shit, use smth else) 
+john --format=nt --wordlist=<Wordlist.txt> <hash file> -> Crack windows NTLM hashes 
+
+john –-single –format=<format> <path to hash>  -> Single mode cracking
+
+john --list=formats -> list all formats. Grep if needed 

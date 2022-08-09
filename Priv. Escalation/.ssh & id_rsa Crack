@@ -1,0 +1,5 @@
+If we manage to successfully capture the id_rsa key file associated with a privledged user's SSH login, we can crack via John:
+
+#-----SSH Keys
+1) python3 /usr/share/john/ssh2john.py <id_rsa key file> > output.txt
+2) john --wordlist=<wordlist.txt> output.txt 
