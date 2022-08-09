@@ -1,0 +1,10 @@
+#-----OVERVIEW
+Common tool to connect to SMB Servers (https://www.willhackforsushi.com/sec504/SMB-Access-from-Linux.pdf)
+
+#-----ADD. NOTES
+Connects via SMB1 default. If Protocol Neogotiation Failed errors, can specify by -m SMB2 or -m SMB3
+
+#-----EXAMPLE USAGE
+smbclient -L <TARGET IP> -U <Username> -m SMB2 -> Enumerate Shares
+smbclient -L <TARGET IP> -U //<domain>/<user> -> Domain user 
+smbclient -U <username> //<IP>/<Share> -> Access an SMB prompt if we authenticate i.e. we get smb :\>
