@@ -1,6 +1,26 @@
-Overview
-3 Functions for SMTP:
+#------Overview
+SMTP:
 1) Verifies who is sending mail
 2) Sends outgoing mail
 3) If mail cannot be delivered, send error back to sender
+
+POP/IMAP:
+Responsible for the transfer of mail b/t client and smtp svr. POP will DL the entire inbox from svr to client, while IMAP will sync only changes
+
+User --> Mail Client e.g. Outlook --> EMAIL sent --> Smtp Server --> Check MX record of recipient domain to find SMTP Recipient svr --> Internet --> Recipient SMTP svr --> POP/IMAP --> Recipient
+
+
+* Metasploit
+1) msfconsole
+2) search smtp_version
+3) show options
+4) set RHOST
+5) run
+
+1) msf console
+2) search smtp_enum
+3) set RHOSTS <IP>
+4) set USER_FILE <wordlist of usernames>  -> /usr/share/wordlists/seclist/usernames/top-usernames-shortlist.txt. Get a list of valid usernames on the smtp svr
+5) Run
+
 

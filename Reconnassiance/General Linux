@@ -1,0 +1,8 @@
+Linenum (https://github.com/rebootuser/LinEnum)
+Must be run on the target system we're interested in.
+
+linenum -e <outputfile.txt> -t -k <keyword> -> enumerate linux system, additionally search all files for a specific keyword, do a slow scan (-t) and output results
+
+
+Linpeas (https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS)
+Looks nicer. Colour coded 
