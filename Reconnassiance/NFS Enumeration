@@ -1,2 +1,8 @@
 * nmap
 nmap -p <port> --script=nfs-ls,nfs-statfs,nfs-showmount <TARGET IP> -> Enumeration of NFS shares
+
+* Mounting
+mount -t nfs <TARGET IP>:<SHARE> <LOCAL DIR TO MOUNT TO>
+
+* Share enum
+showmount -e <TARGET IP>

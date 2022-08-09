@@ -1,0 +1,9 @@
+#-----OVERVIEW
+Hash type identifier (https://github.com/noraj/haiti) 
+
+#-----ADD. NOTES
+Also provides Hashcat and John codes associated with the hash type identified 
+
+#-----EXAMPLE USAGE
+haiti -e <Hash>
+haiti --john-only <Hash>

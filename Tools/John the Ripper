@@ -1,0 +1,10 @@
+#-----OVERVIEW
+Password Cracker. Can perform wordlist, B.F., Word Mangling.
+
+
+#-----ADD. NOTES
+john --wordlist=<wordlist.txt> <hash file, newline separated> -> John automagically detects the hash type and attempts to crack via dictionary
+john --format=<format> --wordlist=<wordlist.txt> 1445ASDFF3FGDSG3145 -> Specify the exact format of the hash if known. Crack a single hash 
+
+
+#-----EXAMPLE USAGES

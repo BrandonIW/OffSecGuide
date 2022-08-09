@@ -1,0 +1,6 @@
+* Root Squash Disabled
+If Root Squash is disabled on the NFS share, a remote Root user can upload files to a Share w/ permissions manipulated how they'd like, i.e. w/ a SUID bit set as the root user. This can be followed by logging in w/ low priv. account, run the uploaded binary (likely a rev shell or smth) and gain root
+
+1) Gain Low Priv. NSF share access likely via locally mounting a share
+2) Create a /bin/bash and upload to the mounted share w/ SUID permissions, and User owner as root
+3) Access target environment w/ low priv. account and run the uploaded binary in the NFS share. Gain root 
