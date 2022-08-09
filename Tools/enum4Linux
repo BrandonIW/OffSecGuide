@@ -1,0 +1,18 @@
+#-----OVERVIEW
+https://www.kali.org/tools/enum4linux/
+Enumeration of SMB & SAMBA. Able to enumerate SMB Userlists, Sharelists, Group and memberships, Password Policy info, Namelists, Machinelists.
+
+#------ADD. NOTES
+Typically you'll see 445 or 139 TCP under nmap as "netbios-ssn" or "microsoft-ds" if SMB is running
+
+#------SWITCHES
+-U -> Get Userlist
+-M -> Get Machinelist
+-N -> Get Namelist
+-S -> Get Sharelist
+-P -> Get Pass. Policy Info
+-G -> Gets Groups and Membership info
+-a -> Do all of the above
+
+#------EXAMPLE USAGE
+enum4linux -a 10.10.1.10
