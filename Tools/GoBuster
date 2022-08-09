@@ -1,6 +1,9 @@
-# Overview
-Subdomain Enumeration
+#-----OVERVIEW
+https://github.com/OJ/gobuster
+Subdomain Enumeration. Directory Enumeration. AWS E3 enumeration. Utilizes Brute Force via a provided Wordlist file. Fuzzing support. 
 
-# Notes
+#-----NOTES
 
-# Example Usage
+
+#-----EXAMPLE USAGES
+gobuster dir -u https://mysite.com/path/to/folder -t 50 -w wordlist.txt -x .php,.html  --> Search for subdirectories under the given URL, utilizing provided wordlist, searching specifically for files with extensions specified by -x 
