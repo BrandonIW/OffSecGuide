@@ -1,1 +1,7 @@
+* NMAP
 
+nmap -p 445 --script=smb-enum-shares.nse,smb-enum.users.nse <TARGET IP ADDRESS>
+
+* enum4linux
+
+enum4linux -a 10.10.1.20
