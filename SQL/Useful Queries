@@ -1,0 +1,3 @@
+PRAGMA table_info(<tablename>); -> Get table information e.g. column names
+SELECT * FROM <table>; -> Dump everything in a table
+.tables -> List all tables
