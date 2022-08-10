@@ -1,0 +1,12 @@
+With SUID and SGID, we're basically looking for binaries that will execute as root or another privledged user. These are recognized by the below permissions:
+
+4777 2777 1777 -> SUID, SGID, Sticky bit
+rws-xxx-xxx, rwx-rws-xxx
+
+Or, search w/ find:
+find / -perm -u=s -type f -exec ls -lah {} \; 2>/dev/null
+
+
+If a file is running as root when a standard user runs it, we can possibly take advantage of it:
+1) Check gtfo bins (https://gtfobins.github.io/)
+2) If the binary is calling another binary via $PATH, we can create a binary that we want to run as root as toss it in $PATH at the beginning. See SUID & $PATH
