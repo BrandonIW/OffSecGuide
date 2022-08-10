@@ -1,0 +1,9 @@
+1) Meterpreter's "hashdump" doesn't seem to be realiable if on a 32-bit process. Migrate to svchost, or some reliable 64 bit process (explorer, spoolsv.exe, svchost seem to be popular) and try
+
+2) To convert a meterpreter shell to regular:
+- Background current session
+- Run "shell_to_meterpreter" post-exploit
+
+3) Client-side web filters can be completely deleted, edit etc at your will
+
+4) BURP may require Ctrl+f5 to refresh page and flush cache if you're not getting results you expect. e.g. if you're trying to re-download a .js that you've already got 
