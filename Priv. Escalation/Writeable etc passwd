@@ -1,0 +1,5 @@
+Manually add a new root user:
+
+1) openssl passwd -1 salt <salt> <password> -> Create appropriate salt/hash
+2) newroot:<openssl output>:0:0:/root/bin/bash
+
