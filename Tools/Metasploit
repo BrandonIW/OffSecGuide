@@ -1,2 +1,44 @@
 #-----OVERVIEW
-Exploitation Framework. Allows for easy exploit searching, packaging and execution. 
+Exploitation Framework. Allows for easy exploit searching, packaging and execution of exploits and payloads
+
+#-----MODULES
+Categorization of tools within the M.S. toolbelt
+1) Auxillery - Supporting modules that are not exploit-related. e.g. Scanners, Web Crawlers
+2) Encoders - Allows you to encode an exploid or payload to avoid sig. detection. Simple obfuscation
+3) Evasion - Modules that attempt to directly evade AV
+4) Exploits - Organized exploits per system e.g. Android, Windows, Unix etc.
+5) Payloads - The binary that will actually be responsible for performing the naughty action e.g. create rev shell, or run calc.exe as a proof of concept.
+- Singles: Self-contained payloads. Do not need anything additional for them to run
+- Stagers: Payloads that setup a communication channel b/t M.S. and the victim. Basically a very small payload that sets the stage for larger payloads later
+- These can be distinguished via a "_" character in the name. shell_reverse_tcp = Single Payload, whereas, shell/reverse_tcp = Stager 
+6) Post - Post-exploit Modules
+
+#-----BASIC CMDS and USAGE
+help
+history
+use <exploit>
+search <keyword>
+searchsploit <keyword> -> Search exploitdb
+search type:exploit <keyword>
+search platform:windows <keyword>
+show options
+show payloads 
+show targets
+info -> Shows verbose info related to w/e context we've currently selected i.e. we select an exploit, and we can show info regarding that exploit
+run 
+set <parameter> <value>
+unset <parameter>
+unset all
+check -> Can do a prelim. check to see if the target is vuln before running
+background -> Sends current session to b/g
+sessions -> View all sessions
+sessions -i # -> Foreground chosen session
+
+#-----Enumeration & Scanners
+Within auxiliary module, there are a number of scanner and enumerators e.g.
+/scanner/discovery/udp_sweep
+/scanner/smb/smb_version
+/scanner/smb/smb_enumshares
+/smb/scanner/smb/smb.login
+
+Other tools are probably better, but these exist if needed.
