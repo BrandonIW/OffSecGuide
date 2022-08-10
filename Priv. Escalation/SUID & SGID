@@ -10,3 +10,6 @@ find / -perm -u=s -type f -exec ls -lah {} \; 2>/dev/null
 If a file is running as root when a standard user runs it, we can possibly take advantage of it:
 1) Check gtfo bins (https://gtfobins.github.io/)
 2) If the binary is calling another binary via $PATH, we can create a binary that we want to run as root as toss it in $PATH at the beginning. See SUID & $PATH
+
+
+*** ALWAYS run sudo -l to see what we're able to run as sudo as the user we're using currently ***
