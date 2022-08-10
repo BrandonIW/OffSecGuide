@@ -1,0 +1,37 @@
+#----OVERVIEW
+Linux system enumeration for various misconfigurations and things that may lead to priv. escl.
+
+#----ADD. Notes
+Linenum (https://github.com/rebootuser/LinEnum)
+Must be run on the target system we're interested in.
+
+linenum -e <outputfile.txt> -t -k <keyword> -> enumerate linux system, additionally search all files for a specific keyword, do a slow scan (-t) and output results
+
+Linpeas (https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS)
+Looks nicer. Colour coded 
+
+#----INFORMATION WE CAN GATHER
+1) Kernal/OS Info
+2) Hostname
+3) User info such as who logged on when, and from what IP
+4) List of Users and Groups w/ UID & GID
+5) Membership
+6) List of Admin users ***
+7) Contents of /etc/passwd ***
+8) Accounts that have recently used SUDO
+9) Files/dirs w/i /home/ that have lax permissions
+10) Environment settings
+11) Number of Shells on the sys
+12) Umask value
+13) Password storage info (encryption method, # of days until expiry etc.)
+14) List of cron contents
+15) Network info (interfaces, dns etc.
+16) 'top' command output for processes
+17) Permissions to critical files like /etc/shadow and if they're misconfigured
+18) Software info
+19) Interesting Files
+20) Files w/ SUID Bit
+21) Non-typical files w/ SUID bit set
+22) SGID bits set
+
+
