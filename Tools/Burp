@@ -1,0 +1,21 @@
+#----Overview
+Java Framework that provides a one-stop shop for web pentesting. In a simple manner, Burp bascially captures & manipulates web traffic b/t attacker and browser. It is a middle man that captures this data and then, when captured, we can process it how we like, and send it to other pars of burp or send to svr
+
+#---Features
+1) Proxy - Probably the most used. Allows intercept & modification of req/response
+2) Repeater - Repeated sending of a request. Useful when trial and err, B.F., and the like
+3) Intruder - Spray an endpoint w/ requests. Can configure payloads etc.
+4) Decoder - Decode and encode payloads prior to sending to a web svr
+5) Comparer - Simply compares data at a word or byte lvl
+6) Sequencer - Used to assess randomness of tokens to see if it was created using secure random values
+
+#----Burp Proxy
+Requires Proxy listener (usually loopback 8080) allowing Burp to accept requests from browser. Also requires the browser to be setup as a proxy. w/ FF, FoxyProxy, insteall, setup w/ 127.0.0.1 @ 8080, and download Cert from http://burpsuite 
+
+---> Scoping
+We do not usually want Burp to capture ALL traffic to every site, as its a bit much. We have our specific targets and that's what we want to work with. To Scope, select the "target" tab > right-click target and select "add to scope". Then in the "proxy" tab > "options" ensure the "and url in target scope" is selected to narrow our scope. 
+
+* If we want Burp to get .js files, we need to remove it from the excluded file types it will interrupt. options > Intercept client Requests  and edit the first condition to remove ^js$| regex. 
+
+---> Fuzzing Extensions
+We can fuzz extensions if we have a wordlist of extensions. Just select the extension inside of Intruder and set that as a variable. Then import wordlist of extensions as the payload and run the Sniper attack. See what we get back from the webpage (the "." in the ext. might be URL encoded which will cause errors) 
