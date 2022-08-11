@@ -1,0 +1,1 @@
+If we have access to Crontab and we see a file running as root that is edit'able or delete'able, we can create a rev_shell, name it the same, and overwrite the file being run by crontab 
