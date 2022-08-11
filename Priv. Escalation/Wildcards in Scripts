@@ -1,0 +1,6 @@
+If scripts employ wildcard characters, this can effectively act as a vector for injection. i.e.
+1) script runs: chown root *
+2) Create a file in the directory called: --reference=myfile.txt
+3) Script expands into: chown root --reference=myfile.txt
+
+This can have unintended effects as now permissions are changed to w/e we've set on myfile.txt
