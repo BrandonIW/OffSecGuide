@@ -1,0 +1,6 @@
+Straight forward. Get hashes and crack in hashcat/John
+
+If writeable, can create a new entry:
+1) mkpasswd -m sha-512 <password>
+2) Edit shadow file, replacing root's password
+3) su root
