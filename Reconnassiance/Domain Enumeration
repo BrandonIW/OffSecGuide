@@ -1,2 +1,4 @@
 * GoBuster (https://github.com/OJ/gobuster)
 - Can be utilized to enumerate subdomains as well as subdirectories on a web server, for example:
+
+gobuster dir -u <webpage> -w <wordlist.txt> 
