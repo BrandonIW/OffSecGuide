@@ -1,0 +1,2 @@
+* NetBIOS Enum:
+sudo nmap -sV --script nbstat.nse <host>
