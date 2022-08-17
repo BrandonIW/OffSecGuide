@@ -1,0 +1,5 @@
+Examples:
+hashcat -m 3000 -a 3 hashfile.txt -> Mode 3 = Brute Force (attack type 3)
+hashcat -m 5600 -a 3 hashfile.txt 
+hashcat -m 5600 -a 0 hashfile.txt wordlist.txt -> Wordlist attack (attack type 0)
+hashcat -h | egrep bcrypt -> Confirm mode in hashcat for bcrypt
