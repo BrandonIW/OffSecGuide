@@ -1,0 +1,26 @@
+#----Enumeration Techniques
+1) Obviously Nmap
+
+2) enum4linux can be useful if SMB/SAMBA share is available. Can retrieve:
+- NetBIOS Name
+- Domain Name
+- Share Enumeration
+- SID
+- User Enumeration
+
+3) Kerbrute: If Kerberos is running as a service on our target for Auth, Kerbrute is a tool allowing for brute force discovery of U & P. However, there are likely account lockout policies in place if we should fail login numerous times
+- kerbute userenum -> Enumerates Valid Domain Names
+- kerbrute bruteforce -> Brute force U:P combos
+- kerbrute bruteuser -> Brtueforce a single user's password from a wordlisthttps://raw.githubusercontent.com/Sq00ky/attacktive-directory-tools/master/passwordlist.txt
+
+Example Commands:
+/kerbrute_linux_amd64 userenum userlist.txt --dc 10.10.182.23 -d spookysec.local -> BF usernames from a given userlist on a target DC and domain 
+/kerbrute_linux_amd64 [command] --help -> Gets help on a cmd
+
+#----Exploit Techniques
+1) ASREPRoasting - This occurs whena  user account has a priviledge level of "Does not require Pre-auth" meaning it does not need to provide valid identification to request a Kerberos ticket on that account. 
+- To take advantage of this, we can use a tool called GetNPUsers.py from within the Impacket tool. 
+- The only requirements is valid usernames, which we enumerated w/ Kerbrute.
+- python3 GetNPUsers.py <domain>/<username> -dc-ip <IP address> -> If the user does not need to provide valid ID, then we will be returned a Kerberos Hash of that user's password
+- We can then crack w/ Hashcat using the appropriate mode  https://hashcat.net/wiki/doku.php?id=example_hashes i.e. 
+sudo hashcat -a 0 -m 18200 hashfile.txt ~/Downloads/passwordlist.txt
