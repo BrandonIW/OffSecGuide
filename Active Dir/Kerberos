@@ -1,0 +1,59 @@
+#----Overview
+Kerb is the default auth service for MS Windows domains. It is supposed to be more secure than NTLM by using 3rd party ticket authorization, and stronger encryption. The whole point of Kerberos is basically to act as a middle-man protocol to authenticate two partys, A (client) and B (some service/app). It's extremely difficult for A and B to authenticate with eachother without the use of a third party that both A and B trust, being C, being Kerberos/KDC. 
+
+#----Terminology
+1) TGT (Ticket Granting Ticket) - A TGT is an authentication ticket used to request service tickets from the TGS for specific resources on the domain
+2) KDC (Key Distrib. Center) - KDC is a service for issuing TGT's and other service tickets that consist of the Authentication Service and TGS
+3) AS (Authentication Service) - The AS issues TGTs to be used by the TGS in the domain to request access to other machines
+4) TGS (Ticket Granting Service) - Takes the TGT and returns a service ticket to a machine on the domain
+5) SPN (Service principle name) - An Identifier given to a service instance to associate a service instance with a domain service account. Windows requires that services have a domain service account, which is why a service needs an SPN
+6) KDC LT Key (KDC Long Term Secret Key) - The KDC key is based on the KRBTGT service account. It is used to encrypt the TGT and sign PACs
+7) Client LT Key (Client Long Term Secret Key) - The client key is based on the computer or service account. It is used to check the encrypted timestamp and encrypt the session key
+8) Service LT key - The service key is based on the service account. It is used to encrypt the service portion of the service ticket and sign the PAC. 
+9) Session Key - Issued by the KDC when a TGT is issued. When a user is requesting a service ticket, the user provides the session key and its TGT to the KDC
+10) PAC (priviledge attribute cert.) - The PAC holds all of the user's relevant information, and is sent along with the TGT to the KDC to validate the user requesting the a service ticket
+
+
+#----How it all kinda works at a high lvl
+1) AS-REQ - The Initial Authentication Request between a client (Party A) and the KDC (Party C). The initial messageincludes: AS_REQ = ( PrincipalClient/User's ID , PrincipalService/Service we Want access to , IP_list/User's IP(s) , Lifetime ) This is sent plaintext
+2) AS-RES - The KDC then checks to see if that user in the AS-REQ is listed as a valid user. If so, the KDC grabs it's secret key from the AD database. It will send back two messages:
+---> 1) A message containing the TGS's Name/ID, and TGS Session key
+---> 2) A TGT. Contains the user's ID, the ID of the TGS, a timestamp, the user's IP and the TGT lifetime, AND the TGS Session key). 
+- The first message is encrypted with the user's secret key (which the user knows) and the TGT is encrypted with the TGS' SECRET KEY
+
+3) The client recieves both messages. The client can decrypt the first message of course, because it knows its own password. It decrypts the first message and gets the TGS Session Key. 
+4) The client now creates two messages. One is a plaintext message stating what service the user wants to access. The second message is a "authenticator" which the user's ID/. The second message is encrypted with the TGS Session key.
+5) The client then sends 3 messages to the TGS. 1) The encrypted TGT (2) The authenticator, encrypted with the TGS Session key (3) Plaintext request of the service it wants
+6) The TGS then checks to ensure that the service requested in the Plaintext message is actually offered. If it is, it will have an assocaited Service Secret Key, which it will grab. The TGS decrypts the TGT with the TGS Secret Key, which it obviously knows, and grabs the TGS Session key. NOW BOTH CLIENT AND TGS HAVE THE SAME TGS SESSION KEY. IT WAS PASSED SECURELY. Then the TGS can decryt the authentictor message with the TGS session key, and get ID information. 
+7) At this point the TGS has access to: The unencrypted TGT, the User Authenticator message, and the plaintext message, and the TGS Session key. The TGS now COMPARES the user ID in both the TGT and the User Authentictor msg to ensure there's a match and timestamps are within threshold. 
+8) The TGS starts creating its own messages:
+---> Message 1: The service Name the user wants to access, timestamp and lifetime AND Service Session Key. Encrypted w/ TGS Session key
+---> Service Ticket: Contains username ID of the user wanting to access, its IP address, and a Service Session Key. Emncrypted with Service Secret Key
+
+9) The client gets both messages. And we sorta repeat the process with the KDC. The user decypts the first message with the TGS Session key. It now has a copy of the Service Session Key. But the user cannot decrypt the Service Ticket, because that ticket is meant to be sent and decrypted by the Service/App. 
+
+10) The user crates another authenticator message encrypted with the Service Session Key. The Service Ticket and the new authenticator (encryoted with Service Session key, which is inside the Service Ticket, which the service will get after it decrypts w/ its secret key) are both sent to the app/service. 
+11) The Service decrypts the Service Ticket w/ its secret key, and grabs the service session key. Then it uses the Service Session key to decrypt the authenticator. It compares timestamps and compares the Username ID in the Service Ticket and the Authenticator. Also checks to ensure that the servie ticket is not expired. It lastly checks its cache to ensure this authenticator is unqiue (prevents replay attacks). If its not in cache, it adds is. 
+
+12) The service creates a service authenticator message, with its ID and timestamp, encryted with the Service Session Key
+13) Client decrpyts with it Session Service Key. User verifies that the Service Name is what it wants, and if it checks out, then we're finally done. 
+
+--> The TGT includes: 
+----> Start/End/Lifetime of the TGT
+----> User's ID
+----> TGS Name
+----> Timestamp
+
+3) The user uses its password to decrypt the returned message and gets access to the TGS session key. The client sends the encrypted TGT to the TGS with the SPN of the service the client wants to access. 
+4) The KDC verifies the TGT of the user, and confirms that the user is authorized to access that service, and then sends a valid session key for the service back to the client
+5) The client requests the service and sends the valid session key to prove the user has access. 
+6) Access to the service is granted
+
+#----Attacks and what priv. they require:
+Kerbrute Enumeration - No domain access required 
+Pass the Ticket - Access as a user to the domain required
+Kerberoasting - Access as any user required
+AS-REP Roasting - Access as any user required
+Golden Ticket - Full domain compromise (domain admin) required 
+Silver Ticket - Service hash required 
+Skeleton Key - Full domain compromise (domain admin) required
