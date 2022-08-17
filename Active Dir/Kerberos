@@ -38,16 +38,6 @@ Kerb is the default auth service for MS Windows domains. It is supposed to be mo
 12) The service creates a service authenticator message, with its ID and timestamp, encryted with the Service Session Key
 13) Client decrpyts with it Session Service Key. User verifies that the Service Name is what it wants, and if it checks out, then we're finally done. 
 
---> The TGT includes: 
-----> Start/End/Lifetime of the TGT
-----> User's ID
-----> TGS Name
-----> Timestamp
-
-3) The user uses its password to decrypt the returned message and gets access to the TGS session key. The client sends the encrypted TGT to the TGS with the SPN of the service the client wants to access. 
-4) The KDC verifies the TGT of the user, and confirms that the user is authorized to access that service, and then sends a valid session key for the service back to the client
-5) The client requests the service and sends the valid session key to prove the user has access. 
-6) Access to the service is granted
 
 #----Attacks and what priv. they require:
 Kerbrute Enumeration - No domain access required 
