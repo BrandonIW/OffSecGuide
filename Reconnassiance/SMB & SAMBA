@@ -1,7 +1,14 @@
-* NMAP
-
+1) NMAP
 nmap -p 445 --script=smb-enum-shares.nse,smb-enum.users.nse <TARGET IP ADDRESS>
 
-* enum4linux
-
+2) num4linux
 enum4linux -a 10.10.1.20
+
+3) smbclient
+smbclient -L \\\\<IP Address> -U <username> ->Enumerates shares on a smb svr 
+smbclient -L <hostname> -U <username>
+smbclient \\\\zimmerman\\public mypasswd -> Accessing a share on the smbsvr
+smbclient -L \\\\10.10.182.23\\ -U 'svc-admin' -> Enumerate shares, authenticating as a user
+smbclient \\\\<IP>\\<share> -U <user> -> Access a share
+
+
