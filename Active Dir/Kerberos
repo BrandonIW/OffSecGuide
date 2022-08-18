@@ -47,3 +47,28 @@ AS-REP Roasting - Access as any user required
 Golden Ticket - Full domain compromise (domain admin) required 
 Silver Ticket - Service hash required 
 Skeleton Key - Full domain compromise (domain admin) required
+
+
+#----Tools & Techniques & Exploits
+1) Enumeration w/ Kerbrute.
+- This words by sending a single UDP frame to the KDC which is able to enumerate the users on a domain (using a Wordlist) WITHOUT triggering a "failed to log on" event in the logs, which would probably alert Blue Team. 
+- Examples:
+./kerbrute userenum --dc CONTROLLER.local -d CONTROLLER.local User.txt
+
+2) Harvesting and BF'ing Tickets w/ Rubeus
+- Harvesting attacks gathers tickets that are being transferred to the KDC and saves them for use in other attacks. 
+- Rubeus is also able to password spray (Single password, many users) or BF (Many passwords, less users). It can obviously do a ton of other stuff, but this is just a peek.
+- With these password attacks, we're essentially trying to get a TGT on behalf of a user who's password we've cracked. If we've cracked a user's password, we get get a TGT, which can be used to get service tickets later. 
+
+Examples:
+Rubeus.exe harvest /interval:30  ->  Harvest for TGTs every 30 seconds 
+Rubeus.exe brute /password:Password1 /noticket -> Password spray against all found users, then generate a TGT for the user. 
+
+3) Kerberoasting w/ Rubeus & Impacket
+- Kerbroasting allows a user to request a service ticket for any service with a registered SPN, then use that ticket to crack the Service password/secret key. The Tikcket contains the hash for the user's password/secret key. So we can run it through John/hashcat to crack it. Basically, we pretend to be HTTPServer account, for example, and request a TGT. The TGT has our hashed secret key, which we try and break (I think...?) 
+
+- If the password is cracked, your abilities at this point obviously kinda depend on the privledges of the account cracked. 
+Examples:
+Rubeus.exe kerberost -> Dumps hashes of any roastable users. Must be RUN ON TARGET SYSTEM
+sudo python3 GetUserSPNs.py controller.local/Machine1:Password1 -dc-ip 10.10.65.72 -request  --> Same shit, but can be done remotely 
+
