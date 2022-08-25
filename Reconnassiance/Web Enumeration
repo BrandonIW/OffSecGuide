@@ -33,3 +33,25 @@ You may be looking for shit like:
 5) Network
 - The network tab can be used to keep track of every external request a webpage makes. 
 - For example, if there's a form you need to fill out, you can fill it out with random data, hit submit, and see where that data goes. 
+
+
+#----Content Discovery
+WRT Content Discovery, we're talking about non-obvious things on a website that aren't often intended for public use. For example, access to configuration files, Admin portals etc. You can find content via 3 different methods:
+
+1) Manually
+- Robots.txt: This is a text file that tells search engines wich pages they are and aren't allowed to show on their search engine results. Can help against web crawlers and web archiving tools from looking at/archiving particular subdirectories w/i a website. However, this also just straight up gives us a list of subdirectories that are indeed present. 
+
+- Favicons: When you open a webpage, on the tab that has the webpage open, at the left of the tab, is a little icon. E.g. for youtube it's the youtube icon etc. Some devs forget to change this. By default, the default favicon represents the framework used to create the site. You can grab the icon from 'page source,' run an MD5 hash on the icon file, and see if its in here to get the framework (https://wiki.owasp.org/index.php/OWASP_favicon_database)
+
+- Sitemap.xml: The sitemap.xml file is sort of the opposite of robots.txt. It lists every file the owner wants to be listed by a search engine. Found via https://site.com/sitemap.xml 
+
+- HTTP Headers: HTTP Responses from Web servers oft have header data that contain some useful info, such as webserver type, version etc. 
+
+2) OSINT
+- Google Dorking: Advanced Google search engine queries to basically just craft really specific queries, such as all pdf files but only on websites that start with tryhackme.com or smth. Some common Google Dorks: (https://hackr.io/blog/google-dorks-cheat-sheet)
+site: -> Return only results from specific website. e.g. site:tryhackme.com
+inurl: -> Return results that have the specified word in the URL e.g. inurl:admin
+filetype: -> Return specific file extensions e.g. filetype:pdf
+intitle: -> Return results that contain the speciifed word in the title e.g. intitle:admin
+
+
