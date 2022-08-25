@@ -1,4 +1,35 @@
-* GoBuster (https://github.com/OJ/gobuster)
+#----GoBuster (https://github.com/OJ/gobuster)
 - Can be utilized to enumerate subdomains as well as subdirectories on a web server, for example:
 
 gobuster dir -u <webpage> -w <wordlist.txt> 
+
+#----Typical Browser Tools (i.e. View Source, Inspector, Debugger etc.)
+1) A good place to start is simply the URL and looking for typical subdirectories such as /customers, /customers/login, /contact, /news etc. These subdirectories can give you some idea regarding what functionalities are on the website. 
+
+2) Page Source - This is the human-readable code returned to our browser/client, given by the web server each time we make a request. The returned code is:
+- HTML (What to display)
+- CSS (How to format it)
+- Javascript (Adds some interactivity to the page so it's not static) 
+
+You may be looking for shit like:
+- Comments left by devs
+- Sus. Javascript code and/or .js files
+- Sus links, designated by "<a" (Anchor tag), followed by "href". i.e. <a href="/news">News</a>
+- Access to directories, like /assets etc. 
+- Framework information about the version/type of framework used to build the site e.g. django etc. Can check the version and see if there's known vuls
+
+3) Developer Tools - Inspector
+- The issue with View Source is its more of a Snapshot of a webpage at a given time. Instead, what if we want to dynamically view the contents of a page at any given time, and dynamically have it update as the page changes. Inspector is bascially a live-view of what is currently on the website that we're looking at, rather than a snapshot of whatever we are seeing when we request the website (page source). With inspector, we can also EDIT and INTERACT with elements on the page.
+
+- With inspector/inspect element, we can edit the HTML we're looking at. For example, if something is blocked behind a paywall, you may be able to bypass it by changing some "blocked" value in the html to "none" or smth of the sort. 
+
+- This only changes shit locally on our browser. Not on the svr-side obviously. 
+
+4) Debugger 
+- This tool is used to debug the javascript on a page by web devs, but can be used in pentesting as well to dig into the functioning of javascript code. In Edge this is the "Sources" option in the dev tools. On the left, we can see a heirarchal layout of stuff being used by the website. We also have the option to input breakpoints (similar to pycharm etc.) while the webpage loads/does stuff, so we can examine its functioning step by step. To create a breakpoint, simply click on the line number when looking at the code. 
+
+- Oftentimes, javascript files are in one line. Use the pretty print option at the bottom of the sources page (Looks like {}) to format it properly.
+
+5) Network
+- The network tab can be used to keep track of every external request a webpage makes. 
+- For example, if there's a form you need to fill out, you can fill it out with random data, hit submit, and see where that data goes. 
