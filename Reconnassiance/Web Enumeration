@@ -54,4 +54,18 @@ inurl: -> Return results that have the specified word in the URL e.g. inurl:admi
 filetype: -> Return specific file extensions e.g. filetype:pdf
 intitle: -> Return results that contain the speciifed word in the title e.g. intitle:admin
 
+- Wappalyzer: Online tool/browser Extension to help determine info such as frameworks, and more. (https://www.wappalyzer.com/)
 
+- Wayback Machine: You're very familiar
+
+- GitHub: Common place to find source code for websites, and other website info like company names, or older versions of websites. As its based on Git (A version control system) you can find stuff like older source code and other info
+
+- s3 Buckets: http(s)://{name}.s3.amazonaws.com Sometimes S3 storage buckets are public/incorrect permissions, and you may be able to access them. 
+
+
+3) Automations
+This refers to tools like Gobuster etc. w/ a wordlist to find subdomains.
+
+ffuf -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -u http://10.10.108.72/FUZZ
+dirb http://10.10.108.72/ /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt
+gobuster dir --url http://10.10.108.72/ -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt
