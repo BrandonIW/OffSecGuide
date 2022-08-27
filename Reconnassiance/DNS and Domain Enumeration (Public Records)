@@ -27,7 +27,7 @@ dig tryhackme.com MX
 
 
 4) DNSDumpster
-Onlien service that looks for subdomains, such as webmail.tryhackme.com, support.tryhackme.com etc. etc. DNSDumpster also returns the typical A/MX records etc. etc.
+Onlien service that looks for subdomains, such as webmail.tryhackme.com, support.tryhackme.com etc. etc. DNSDumpster also returns the typical A/MX records etc. etc. Remember that with webmail.comtryhackme.com -> ".com" is top level domain, "tryhackme" is second-level domain and "webmail" is subdomain
 
 
 5) Shodan.io
