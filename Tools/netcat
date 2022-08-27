@@ -1,0 +1,8 @@
+#----Overview
+L7 connectivity tool supporting both TCP and UDP. Can act as both a listener or server when connecting to a particular port & IP through some simple cmds. For ex: 
+
+nc 10.10.15.114 80 --> Basically same as telnet 10.10.15.114 80. Basically just the use the TCP stack to connect to this port and IP and see what happens 
+
+Examples:
+nc -lvnp 8080 -> (l)isten mode. Specify (p)ort number. (v)erbose output to help with bugs. (n)umeric only/do not resolve hostnames w/ DNS.
+nc -lvnpk 8080 -> Keep listening after the client has disconnected. 
