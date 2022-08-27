@@ -24,3 +24,11 @@ You will get far more verbose output with dig. Generally better than nslookup
 
 Examples:
 dig tryhackme.com MX
+
+
+4) DNSDumpster
+Onlien service that looks for subdomains, such as webmail.tryhackme.com, support.tryhackme.com etc. etc. DNSDumpster also returns the typical A/MX records etc. etc.
+
+
+5) Shodan.io
+Online database that collects information on anything that connects to the internet. Can be very nice for finding trends like the most common port used for Apache, etc. ALso shows headers returned from a IP's open ports, basically responses to Shodan's queries to get information 
