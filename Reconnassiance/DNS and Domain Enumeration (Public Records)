@@ -1,0 +1,26 @@
+1) Whois
+Whois is a protocol on port 43, used by Whois servvers responsible for responding to whois queries with information about the domain. This information includes:
+- Registrar: Which registrar was the domain name registered under?
+- Contact Info of registrant: Name, phone, email etc.
+- Creation & expiration dates of the domain. When does it need to be renewed
+- Name Server: Which server to ask to resolve this domain's name
+
+Examples:
+whois tryhackme.com
+whois yahoo.com 
+
+
+2) Nslookup
+
+Examples:
+nslookup -type=A tryhackme.com 8.8.8.8 --> Lookup A records for tryhackme, using google'd DNS servers
+nslookup -type=MX tryhackme.com --> Find MX records for a domain, using default DNS servers on the system
+nslookup.exe -type=TXT quicktech.ca  --> Find TXT records. Can be helpful because now we know they use spamtitan for example.
+
+3) Dig
+
+The syntax is different. dig DOMAIN_NAME RECORD_TYPE
+You will get far more verbose output with dig. Generally better than nslookup 
+
+Examples:
+dig tryhackme.com MX
