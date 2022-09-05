@@ -1,0 +1,42 @@
+#----Host Discovery Basics
+Remember the typical ARP across Networks:
+1) PC1 realizes ARP recipient of <IP> isn't on its subnet
+2) ARP Request to Router to find MAC of default gateway (if not already cached)
+3) Default gateway replies w/ ARP Reply w/ it's default gateway
+4) PC1 sends ping to <IP> w/ router's MAC as destination
+5) Router strips L2 header, but L3 is still destined to <IP>
+6) Router ARP's for the MAC of <IP>
+7) Router recieves ARP reply and fwd's the Packet from PC1 to <IP> w/ appropriate MAC address 
+
+Host Discovery via ICMP:
+ICMP works @ L3, so ARP queries will always precede ICMP echo requests if the IP isn't already cached. 
+- However, new MS OS block ICMP by default in Windows firewall. 
+
+Host Discovery via TCP/UDP
+Simply takes adv. of the 3-way handshake to see if we get a SYN/ACK in reply to a SYN. 
+
+* Nmap - Common tool for port enumeration
+
+Switches:
+-sS -> TCP Half Scan (In Wireshark you'll see SYN > SYN/ACK > RST) Avoid logging by IDS/IPS as no full TCP handshake is completed. Default. Open if recieves SYN/ACK
+-sU -> UDP Scan (Slower than TCP as it will need to wait for a timeout if closed)
+-sT -> Full TCP Connect Scan (leaves log/footprint)
+-sV -> Detect Service Version
+-sX -> Xmas Scan (If no return, open or filtered)
+-sF -> FIN Scan (If no return, open or filtered)
+-sN -> NULL Scan (If no return, open or filtered)
+-PR -sn -> Only perform ARP Queries to determine if a host is alive. Do not scan ports afterwards (-sn). 
+-PE -sn -> Only perform ICMP Echo Queries to determine if a host is alive. Do not scan ports afterwards (-sn). 
+-PP -sn -> Only perform ICMP Timestamp Queries to determine if a host is alive. Do not scan ports afterwards (-sn). 
+-PM -sn -> Only perform ICMP Mask Queries to determine if a host is alive. Do not scan ports afterwards (-sn). 
+-PA<ports> i.e. -PA80,443,8080 -PA21-25 -PA22 -> Only send TCP ACK. If we get a RST back, it's open, because the recipient is recieving an ACK to a connection that's not open, so we get a RST in return. 
+-O -> Detect OS
+-A -> Aggressive (OS, service version, tracert)
+-v/-vv/-vvv -> Verbosity
+-p 80-100 / -p- -> Choose ports (-p- = all ports)
+--top-ports 1000 -> Scan top 1000 ports
+-oA -> Save results in XML/Normal/Script Kiddie output
+
+Useful Usages:
+nmap -sV -sC --script vuln <IP>  -> Scan for Low Hanging Fruit Vulns
+nmap -sL 10.10.0-255.101-125 -> Lists all the IPs that would be scanned, but it wont actually scan them 
